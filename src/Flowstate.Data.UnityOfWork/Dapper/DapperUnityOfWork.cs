@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Data;
 using System.Data.Common;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Flowstate.Data.UnityOfWork.Dapper
 {
@@ -17,14 +20,36 @@ namespace Flowstate.Data.UnityOfWork.Dapper
 
         IUnityOfWorkTransaction IUnityOfWork.CurrentTransaction => CurrentTransaction;
 
-        public IUnityOfWorkTransaction BeginTransaction()
+        public IUnityOfWorkTransaction BeginTransaction(IsolationLevel isolationLevel)
         {
+
             if (CurrentTransaction != null)
                 throw new InvalidOperationException("Previous transaction is not completed.");
 
             DbConnection.OpenIfNeeded();
-            _currentTransaction = new DapperUnityOfWorkTransaction(DbConnection.BeginTransaction());
+            _currentTransaction = new DapperUnityOfWorkTransaction(DbConnection.BeginTransaction(isolationLevel));
             return _currentTransaction;
         }
+
+        public IUnityOfWorkTransaction BeginTransaction() =>
+            BeginTransaction(IsolationLevel.ReadCommitted);
+
+
+        public async Task<IUnityOfWorkTransaction> BeginTransactionAsync(
+            IsolationLevel isolationLevel, CancellationToken cancellationToken)
+        {
+
+            if (CurrentTransaction != null)
+                throw new InvalidOperationException("Previous transaction is not completed.");
+
+            await DbConnection.OpenIfNeededAsync(cancellationToken);
+            _currentTransaction = new DapperUnityOfWorkTransaction(
+                await DbConnection.BeginTransactionAsync(isolationLevel, cancellationToken));
+
+            return _currentTransaction;
+        }
+
+        public async Task<IUnityOfWorkTransaction> BeginTransactionAsync(CancellationToken cancellationToken) =>
+            await BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
     }
 }

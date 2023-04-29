@@ -1,5 +1,7 @@
 ﻿using System.Data;
 using System.Data.Common;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Flowstate.Data.UnityOfWork.Dapper
 {
@@ -9,6 +11,11 @@ namespace Flowstate.Data.UnityOfWork.Dapper
         {
             if (@this.State == ConnectionState.Open) return;
             @this.Open();
+        }
+        public static async Task OpenIfNeededAsync(this DbConnection @this, CancellationToken cancellationToken)
+        {
+            if (@this.State == ConnectionState.Open) return;
+            await @this.OpenAsync(cancellationToken);
         }
     }
 }

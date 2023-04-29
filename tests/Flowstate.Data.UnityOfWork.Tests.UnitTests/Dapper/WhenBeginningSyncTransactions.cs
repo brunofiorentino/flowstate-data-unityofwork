@@ -5,7 +5,7 @@ using System.Data.Common;
 
 namespace Flowstate.Data.UnityOfWork.Tests.UnitTests.Dapper;
 
-public class WhenBeginningTransactions
+public sealed class WhenBeginningSyncTransactions
 {
     [Fact]
     public void Created_record_is_not_persisted_when_Rollback_is_invoked()

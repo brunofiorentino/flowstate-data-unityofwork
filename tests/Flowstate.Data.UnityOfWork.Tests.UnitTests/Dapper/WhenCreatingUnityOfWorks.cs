@@ -3,7 +3,7 @@ using Microsoft.Data.Sqlite;
 
 namespace Flowstate.Data.UnityOfWork.Tests.UnitTests.Dapper;
 
-public class WhenCreatingUnityOfWorks
+public sealed class WhenCreatingUnityOfWorks
 {
     [Fact]
     public void Members_are_properly_initilized()
