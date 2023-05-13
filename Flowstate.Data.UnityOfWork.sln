@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flowstate.Data.UnityOfWork", "src\Flowstate.Data.UnityOfWork\Flowstate.Data.UnityOfWork.csproj", "{FD87D96E-4E91-4FCA-BFCD-4A5606882CA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flowstate.Data.UnityOfWork", "src\Flowstate.Data.UnityOfWork\Flowstate.Data.UnityOfWork.csproj", "{FD87D96E-4E91-4FCA-BFCD-4A5606882CA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flowstate.Data.UnityOfWork.Tests.UnitTests", "tests\Flowstate.Data.UnityOfWork.Tests.UnitTests\Flowstate.Data.UnityOfWork.Tests.UnitTests.csproj", "{A19EFDC7-504A-4C91-BF04-844A71DC9CA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flowstate.Data.UnityOfWork.Tests.UnitTests", "tests\Flowstate.Data.UnityOfWork.Tests.UnitTests\Flowstate.Data.UnityOfWork.Tests.UnitTests.csproj", "{A19EFDC7-504A-4C91-BF04-844A71DC9CA6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{EBEC6E5F-670C-4504-99CF-A61534F3A228}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E5CBD452-5607-4FBA-AC46-CD417E73AE91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +28,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FD87D96E-4E91-4FCA-BFCD-4A5606882CA0} = {EBEC6E5F-670C-4504-99CF-A61534F3A228}
+		{A19EFDC7-504A-4C91-BF04-844A71DC9CA6} = {E5CBD452-5607-4FBA-AC46-CD417E73AE91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2611DEE-99AC-45F5-A244-7E2C5838A07B}

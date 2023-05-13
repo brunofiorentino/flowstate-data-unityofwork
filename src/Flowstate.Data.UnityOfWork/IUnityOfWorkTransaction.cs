@@ -6,7 +6,6 @@ namespace Flowstate.Data.UnityOfWork
 {
     public interface IUnityOfWorkTransaction : IDisposable, IAsyncDisposable
     {
-        bool Completed { get; }
         void Commit();
         Task CommitAsync(CancellationToken cancellationToken);
         void Rollback();

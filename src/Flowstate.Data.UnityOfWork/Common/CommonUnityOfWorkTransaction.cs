@@ -3,14 +3,15 @@ using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Flowstate.Data.UnityOfWork.Dapper
+namespace Flowstate.Data.UnityOfWork.Common
 {
-    public sealed class DapperUnityOfWorkTransaction : IUnityOfWorkTransaction
+    public sealed class CommonUnityOfWorkTransaction<TTransaction> : IUnityOfWorkTransaction 
+        where TTransaction : DbTransaction
     {
-        public DapperUnityOfWorkTransaction(DbTransaction dbTransaction) =>
+        public CommonUnityOfWorkTransaction(TTransaction dbTransaction) =>
             DbTransaction = dbTransaction ?? throw new ArgumentNullException(nameof(dbTransaction));
 
-        public DbTransaction DbTransaction { get; }
+        public TTransaction DbTransaction { get; }
         public bool Completed { get; private set; }
 
         public void Commit()
