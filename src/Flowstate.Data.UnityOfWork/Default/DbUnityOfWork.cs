@@ -27,10 +27,10 @@ namespace Flowstate.Data.UnityOfWork.Default
 
         IUnityOfWorkTransaction IUnityOfWork.CurrentTransaction => CurrentTransaction;
 
-        public (TDbConnection, TDbTransaction) DbConnectionDbTransactionPair() =>
+        public (TDbConnection, TDbTransaction) GetDbObjects() =>
             (EnsureOpenDbConnection(), CurrentTransaction?.DbTransaction);
 
-        public async Task<(TDbConnection, TDbTransaction)> DbConnectionDbTransactionPairAsync
+        public async Task<(TDbConnection, TDbTransaction)> GetDbObjectsAsync
             (CancellationToken cancellationToken) =>
                 (await EnsureOpenConnectionAsync(cancellationToken), CurrentTransaction?.DbTransaction);
 

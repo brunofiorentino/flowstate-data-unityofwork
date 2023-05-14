@@ -7,8 +7,8 @@ public sealed class WhenRelyingOnAsyncTransactions : CancellableTests
     [Fact]
     public async Task CreatedEntityIsNotPersistedWhenRollbackIsInvoked()
     {
-        var (unityOfWorkContext, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
-        await using var unityOfWork = unityOfWorkContext.StartUnityOfWork();
+        var (unityOfWorkManager, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
+        await using var unityOfWork = unityOfWorkManager.StartUnityOfWork();
         testRepository.InitializeSchema();
 
         await using (var transaction = await unityOfWork.StartTransactionAsync(TestCancellationToken))
@@ -23,8 +23,8 @@ public sealed class WhenRelyingOnAsyncTransactions : CancellableTests
     [Fact]
     public async Task CreatedEntityIsPersistedWhenCommitIsInvoked()
     {
-        var (unityOfWorkContext, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
-        await using var unityOfWork = unityOfWorkContext.StartUnityOfWork();
+        var (unityOfWorkManager, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
+        await using var unityOfWork = unityOfWorkManager.StartUnityOfWork();
         testRepository.InitializeSchema();
 
         await using (var transaction = await unityOfWork.StartTransactionAsync(TestCancellationToken))
@@ -39,8 +39,8 @@ public sealed class WhenRelyingOnAsyncTransactions : CancellableTests
     [Fact]
     public async Task CreatedEntityIsNotPersistedWhenCommitIsNotInvoked()
     {
-        var (unityOfWorkContext, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
-        await using var unityOfWork = unityOfWorkContext.StartUnityOfWork();
+        var (unityOfWorkManager, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
+        await using var unityOfWork = unityOfWorkManager.StartUnityOfWork();
         testRepository.InitializeSchema();
 
         await using (var transaction = await unityOfWork.StartTransactionAsync(TestCancellationToken))
@@ -52,11 +52,31 @@ public sealed class WhenRelyingOnAsyncTransactions : CancellableTests
     [Fact]
     public async Task CannotStartAnotherTransactionBeforeCompletingPrevious()
     {
-        var (unityOfWorkContext, _) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
-        await using var unityOfWork = unityOfWorkContext.StartUnityOfWork();
+        var (unityOfWorkManager, _) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
+        await using var unityOfWork = unityOfWorkManager.StartUnityOfWork();
 
         await using var transaction = await unityOfWork.StartTransactionAsync(TestCancellationToken);
 
         await Assert.ThrowsAsync<InvalidOperationException>(() => unityOfWork.StartTransactionAsync(TestCancellationToken));
+    }
+
+    [Fact]
+    public async Task CanStartAndCompleteMultipleTransactionsSequentiallyFromTheSameUnityOfWork()
+    {
+        var (unityOfWorkManager, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
+        const int iterations = 3;
+        await using var unityOfWork = unityOfWorkManager.StartUnityOfWork();
+        testRepository.InitializeSchema();
+
+        for (var i = 0; i < iterations; i++)
+        {
+            await using (var transaction = await unityOfWork.StartTransactionAsync(TestCancellationToken))
+            {
+                await testRepository.AddAsync(new($"t{i}", "..."), TestCancellationToken);
+                await transaction.CommitAsync(TestCancellationToken);
+            }
+        }
+
+        Assert.Equal(iterations, (await testRepository.FindAllAsync(TestCancellationToken)).Count);
     }
 }

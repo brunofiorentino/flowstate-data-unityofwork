@@ -4,7 +4,7 @@ using System.Data;
 
 namespace Flowstate.Data.UnityOfWork.Tests.UnitTests.Default;
 
-public sealed class WhenCreatingUnityOfWorks
+public sealed class WhenCreatingDbUnitiesOfWork
 {
     [Fact]
     public void MembersAreProperlyInitialized()

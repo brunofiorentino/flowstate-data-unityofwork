@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Flowstate.Data.UnityOfWork.Default
 {
-    public interface IManagedDbContext<TDbConnection, TDbTransaction>
+    public interface IDbUnityOfWorkContext<TDbConnection, TDbTransaction>
         where TDbConnection : DbConnection
         where TDbTransaction : DbTransaction
     {

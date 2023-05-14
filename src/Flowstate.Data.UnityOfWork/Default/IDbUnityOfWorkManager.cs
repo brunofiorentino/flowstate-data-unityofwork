@@ -4,7 +4,7 @@ namespace Flowstate.Data.UnityOfWork.Default
 {
     public interface IDbUnityOfWorkManager<TDbConnection, TDbTransaction> :
         IUnityOfWorkManager,
-        IManagedDbContext<TDbConnection, TDbTransaction> 
+        IDbUnityOfWorkContext<TDbConnection, TDbTransaction> 
         where TDbConnection : DbConnection
         where TDbTransaction : DbTransaction
     {

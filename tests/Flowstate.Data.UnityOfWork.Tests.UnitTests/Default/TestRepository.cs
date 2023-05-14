@@ -6,9 +6,9 @@ namespace Flowstate.Data.UnityOfWork.Tests.UnitTests.Default;
 
 internal class TestRepository
 {
-    private readonly IManagedDbContext<SqliteConnection, SqliteTransaction> _managedDbContext;
+    private readonly IDbUnityOfWorkContext<SqliteConnection, SqliteTransaction> _managedDbContext;
 
-    public TestRepository(IManagedDbContext<SqliteConnection, SqliteTransaction> managedDbContext) =>
+    public TestRepository(IDbUnityOfWorkContext<SqliteConnection, SqliteTransaction> managedDbContext) =>
         _managedDbContext = managedDbContext;
 
     public void InitializeSchema()

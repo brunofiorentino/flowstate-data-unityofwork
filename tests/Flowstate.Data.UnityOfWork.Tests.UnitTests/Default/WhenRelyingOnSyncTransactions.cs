@@ -5,8 +5,8 @@ public sealed class WhenRelyingOnSyncTransactions
     [Fact]
     public void CreatedEntityIsNotPersistedWhenRollbackIsInvoked()
     {
-        var (unityOfWorkContext, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
-        using var unityOfWork = unityOfWorkContext.StartUnityOfWork();
+        var (unityOfWorkManager, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
+        using var unityOfWork = unityOfWorkManager.StartUnityOfWork();
         testRepository.InitializeSchema();
 
         using (var transaction = unityOfWork.StartTransaction())
@@ -21,8 +21,8 @@ public sealed class WhenRelyingOnSyncTransactions
     [Fact]
     public void CreatedEntityIsPersistedWhenCommitIsInvoked()
     {
-        var (unityOfWorkContext, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
-        using var unityOfWork = unityOfWorkContext.StartUnityOfWork();
+        var (unityOfWorkManager, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
+        using var unityOfWork = unityOfWorkManager.StartUnityOfWork();
         testRepository.InitializeSchema();
 
         using (var transaction = unityOfWork.StartTransaction())
@@ -37,8 +37,8 @@ public sealed class WhenRelyingOnSyncTransactions
     [Fact]
     public void CreatedEntityIsNotPersistedWhenCommitIsNotInvoked()
     {
-        var (unityOfWorkContext, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
-        using var unityOfWork = unityOfWorkContext.StartUnityOfWork();
+        var (unityOfWorkManager, testRepository) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
+        using var unityOfWork = unityOfWorkManager.StartUnityOfWork();
         testRepository.InitializeSchema();
 
         using (var transaction = unityOfWork.StartTransaction())
@@ -50,8 +50,8 @@ public sealed class WhenRelyingOnSyncTransactions
     [Fact]
     public void CannotStartAnotherTransactionBeforeCompletingPrevious()
     {
-        var (unityOfWorkContext, _) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
-        using var unityOfWork = unityOfWorkContext.StartUnityOfWork();
+        var (unityOfWorkManager, _) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
+        using var unityOfWork = unityOfWorkManager.StartUnityOfWork();
 
         using var transaction = unityOfWork.StartTransaction();        
 

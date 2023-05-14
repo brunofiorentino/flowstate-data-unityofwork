@@ -3,15 +3,15 @@ using Microsoft.Data.Sqlite;
 
 namespace Flowstate.Data.UnityOfWork.Tests.UnitTests.Default;
 
-public class WhenCreatingUnityOfWorkManagers
+public class WhenCreatingDbUnityOfWorkManagers
 {
     [Fact]
     public void CreatesNonNullInstanceWithExpectedUnderlyingType()
     {
-        var dbUnityOfWorkManager = DbUnityOfWorkManagerFactory
+        var unityOfWorkManager = DbUnityOfWorkManagerFactory
             .Create<SqliteConnection, SqliteTransaction>(() => new SqliteConnection());
         
-        Assert.NotNull(dbUnityOfWorkManager);
-        Assert.IsType<DbUnityOfWorkManager<SqliteConnection, SqliteTransaction>>(dbUnityOfWorkManager);
+        Assert.NotNull(unityOfWorkManager);
+        Assert.IsType<DbUnityOfWorkManager<SqliteConnection, SqliteTransaction>>(unityOfWorkManager);
     }
 }

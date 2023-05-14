@@ -32,11 +32,26 @@ namespace Flowstate.Data.UnityOfWork.Default
 
         IUnityOfWork IUnityOfWorkManager.StartUnityOfWork() => StartUnityOfWork();
 
-        (TDbConnection, TDbTransaction) IManagedDbContext<TDbConnection, TDbTransaction>.GetDbObjects() =>
-            CurrentUnityOfWork!.DbConnectionDbTransactionPair();
+        internal const string CannotUseDbUnityOfWorkContextOperationsWithoutStartingOuterUnityOfWorkMessage = 
+            "Cannot use DbUnityOfWorkContext operations without starting outer UnityOfWork.";
+
+        (TDbConnection, TDbTransaction) IDbUnityOfWorkContext<TDbConnection, TDbTransaction>.GetDbObjects() 
+        {
+            if (CurrentUnityOfWork == null)
+                throw new InvalidOperationException(
+                    CannotUseDbUnityOfWorkContextOperationsWithoutStartingOuterUnityOfWorkMessage);
+
+            return CurrentUnityOfWork.GetDbObjects(); 
+        }
 
         async Task<(TDbConnection, TDbTransaction)>
-            IManagedDbContext<TDbConnection, TDbTransaction>.GetDbObjectsAsync(CancellationToken cancellationToken) =>
-            await CurrentUnityOfWork!.DbConnectionDbTransactionPairAsync(cancellationToken);
+            IDbUnityOfWorkContext<TDbConnection, TDbTransaction>.GetDbObjectsAsync(CancellationToken cancellationToken)
+        {
+            if (CurrentUnityOfWork == null)
+                throw new InvalidOperationException(
+                    CannotUseDbUnityOfWorkContextOperationsWithoutStartingOuterUnityOfWorkMessage);
+            
+            return await CurrentUnityOfWork.GetDbObjectsAsync(cancellationToken);
+        }
     }
 }

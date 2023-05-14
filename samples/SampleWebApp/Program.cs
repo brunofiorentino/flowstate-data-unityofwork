@@ -12,12 +12,12 @@ builder.Services.AddScoped(_ =>
     DbUnityOfWorkManagerFactory.Create<SqliteConnection, SqliteTransaction>(() =>
         new("Data Source=InMemorySample;Mode=Memory;Cache=Shared")));
 
-// Add interface for repository consumption
-builder.Services.AddScoped<IManagedDbContext<SqliteConnection, SqliteTransaction>>(p => 
-    p.GetRequiredService<IDbUnityOfWorkManager<SqliteConnection, SqliteTransaction>>());
-
 // Add interface for app layer consumption
 builder.Services.AddScoped<IUnityOfWorkManager>(p => 
+    p.GetRequiredService<IDbUnityOfWorkManager<SqliteConnection, SqliteTransaction>>());
+
+// Add interface for repository consumption
+builder.Services.AddScoped<IDbUnityOfWorkContext<SqliteConnection, SqliteTransaction>>(p =>
     p.GetRequiredService<IDbUnityOfWorkManager<SqliteConnection, SqliteTransaction>>());
 
 // Repositories
