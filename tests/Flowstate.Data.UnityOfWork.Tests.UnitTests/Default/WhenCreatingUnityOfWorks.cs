@@ -1,16 +1,16 @@
-﻿using Flowstate.Data.UnityOfWork.Common;
+﻿using Flowstate.Data.UnityOfWork.Default;
 using Microsoft.Data.Sqlite;
 using System.Data;
 
-namespace Flowstate.Data.UnityOfWork.Tests.UnitTests.Common;
+namespace Flowstate.Data.UnityOfWork.Tests.UnitTests.Default;
 
 public sealed class WhenCreatingUnityOfWorks
 {
     [Fact]
-    public void MembersAreProperlyInitilized()
+    public void MembersAreProperlyInitialized()
     {
         var connection = new SqliteConnection();
-        var unityOfWork = new CommonUnityOfWork<SqliteConnection, SqliteTransaction>(() => connection);
+        var unityOfWork = new DbUnityOfWork<SqliteConnection, SqliteTransaction>(() => connection);
 
         Assert.NotNull(unityOfWork.DbConnection);
         Assert.Same(connection, unityOfWork.DbConnection);

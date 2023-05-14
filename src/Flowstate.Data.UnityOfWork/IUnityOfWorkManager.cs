@@ -1,8 +1,8 @@
 ﻿namespace Flowstate.Data.UnityOfWork
 {
-    public interface IUnityOfWorkContext
+    public interface IUnityOfWorkManager
     {
         IUnityOfWork CurrentUnityOfWork { get; }
-        IUnityOfWork CreateContextUnityOfWork();
+        IUnityOfWork StartUnityOfWork();
     }
 }

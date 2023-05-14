@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flowstate.Data.UnityOfWork"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flowstate.Data.UnityOfWork.Tests.UnitTests", "tests\Flowstate.Data.UnityOfWork.Tests.UnitTests\Flowstate.Data.UnityOfWork.Tests.UnitTests.csproj", "{A19EFDC7-504A-4C91-BF04-844A71DC9CA6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{EBEC6E5F-670C-4504-99CF-A61534F3A228}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EBEC6E5F-670C-4504-99CF-A61534F3A228}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E5CBD452-5607-4FBA-AC46-CD417E73AE91}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E5CBD452-5607-4FBA-AC46-CD417E73AE91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApp", "samples\SampleWebApp\SampleWebApp.csproj", "{36BF4C7E-D7B9-4BB9-A318-462625163B7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{A19EFDC7-504A-4C91-BF04-844A71DC9CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A19EFDC7-504A-4C91-BF04-844A71DC9CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A19EFDC7-504A-4C91-BF04-844A71DC9CA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36BF4C7E-D7B9-4BB9-A318-462625163B7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36BF4C7E-D7B9-4BB9-A318-462625163B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36BF4C7E-D7B9-4BB9-A318-462625163B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36BF4C7E-D7B9-4BB9-A318-462625163B7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

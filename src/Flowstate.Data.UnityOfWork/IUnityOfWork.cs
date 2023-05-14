@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 
 namespace Flowstate.Data.UnityOfWork
 {
-    public interface IUnityOfWork: IDisposable, IAsyncDisposable
+    public interface IUnityOfWork : IDisposable, IAsyncDisposable
     {
         IUnityOfWorkTransaction CurrentTransaction { get; }
-        IUnityOfWorkTransaction BeginTransaction();
-        IUnityOfWorkTransaction BeginTransaction(IsolationLevel isolationLevel);
-        Task<IUnityOfWorkTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
-        Task<IUnityOfWorkTransaction> BeginTransactionAsync(IsolationLevel isolationLevel, CancellationToken cancellationToken);
+        IUnityOfWorkTransaction StartTransaction();
+        IUnityOfWorkTransaction StartTransaction(IsolationLevel isolationLevel);
+        Task<IUnityOfWorkTransaction> StartTransactionAsync(CancellationToken cancellationToken);
+
+        Task<IUnityOfWorkTransaction> StartTransactionAsync(
+            IsolationLevel isolationLevel, CancellationToken cancellationToken);
     }
 }
