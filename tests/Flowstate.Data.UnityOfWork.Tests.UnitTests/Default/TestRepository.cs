@@ -6,20 +6,20 @@ namespace Flowstate.Data.UnityOfWork.Tests.UnitTests.Default;
 
 internal class TestRepository
 {
-    private readonly IDbUnityOfWorkContext<SqliteConnection, SqliteTransaction> _managedDbContext;
+    private readonly IDbUnityOfWorkContext<SqliteConnection, SqliteTransaction> _dbUnityOfWorkContext;
 
-    public TestRepository(IDbUnityOfWorkContext<SqliteConnection, SqliteTransaction> managedDbContext) =>
-        _managedDbContext = managedDbContext;
+    public TestRepository(IDbUnityOfWorkContext<SqliteConnection, SqliteTransaction> dbUnityOfWorkContext) =>
+        _dbUnityOfWorkContext = dbUnityOfWorkContext;
 
     public void InitializeSchema()
     {
-        var (dbConnection, _) = _managedDbContext.GetDbObjects();
+        var (dbConnection, _) = _dbUnityOfWorkContext.GetDbObjects();
         dbConnection.Execute("CREATE TABLE test (id TEXT, name TEXT);");
     }
 
     public void Add(TestEntity testEntity)
     {
-        var (dbConnection, dbTransaction) = _managedDbContext.GetDbObjects();
+        var (dbConnection, dbTransaction) = _dbUnityOfWorkContext.GetDbObjects();
 
         const string sql = "INSERT INTO test (id, name) VALUES (@Id, @Name);";
         var affectedRows = dbConnection.Execute(sql, param: testEntity, transaction: dbTransaction);
@@ -29,7 +29,7 @@ internal class TestRepository
 
     public async Task AddAsync(TestEntity testEntity, CancellationToken cancellationToken)
     {
-        var (dbConnection, dbTransaction) = await _managedDbContext.GetDbObjectsAsync(cancellationToken);
+        var (dbConnection, dbTransaction) = await _dbUnityOfWorkContext.GetDbObjectsAsync(cancellationToken);
 
         const string sql = "INSERT INTO test (id, name) VALUES (@Id, @Name);";
         var affectedRows = await dbConnection.ExecuteAsync(sql, param: testEntity, transaction: dbTransaction);
@@ -39,7 +39,7 @@ internal class TestRepository
 
     public List<TestEntity> FindAll()
     {
-        var (dbConnection, dbTransaction) = _managedDbContext.GetDbObjects();
+        var (dbConnection, dbTransaction) = _dbUnityOfWorkContext.GetDbObjects();
 
         const string sql = "SELECT t.id, t.name FROM test t ORDER BY t.name;";
         var testEntities = dbConnection.Query<TestEntity>(sql, transaction: dbTransaction).ToList();
@@ -49,7 +49,7 @@ internal class TestRepository
 
     public async Task<List<TestEntity>> FindAllAsync(CancellationToken cancellationToken)
     {
-        var (dbConnection, dbTransaction) = await _managedDbContext.GetDbObjectsAsync(cancellationToken);
+        var (dbConnection, dbTransaction) = await _dbUnityOfWorkContext.GetDbObjectsAsync(cancellationToken);
 
         const string sql = "SELECT t.id, t.name FROM test t ORDER BY t.name;";
         var testEntities = dbConnection.Query<TestEntity>(sql, transaction: dbTransaction).ToList();
