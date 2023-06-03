@@ -6,7 +6,7 @@ Flowstate.Data.UnityOfWork is C# library that provides abstractions to manage an
 
 ### Dependency Injection Setup
 ``` 
-// Add scoped unity of work context for chosen DB provider
+// Add scoped DbUnityOfWorkManagerFactory for chosen .net data provider
 services.AddScoped(_ =>
     DbUnityOfWorkManagerFactory.Create<SqliteConnection, SqliteTransaction>(() =>
         new("Data Source=InMemorySample;Mode=Memory;Cache=Shared")));
