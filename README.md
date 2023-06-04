@@ -33,7 +33,8 @@ services.AddScoped<CreateTodoUseCase>();
 **NOTES:** 
 
 - All required registrations from the library need [**Scoped Lifetime**](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection#scoped), hence dependent services too.
-- As is common with database-related libraries, "non guaranteed thread-safety for instance members" is propagated from .NET data providers. Given this limitation, if your usage is different from ASP.NET (where scopes are implicitly managed and bound to web requests), say a job, and you need parallelism, then you need to define and manage dependency injection scopes associated with your threads.
+- As is common with database-related libraries, "non guaranteed thread-safety for instance members" is propagated from .NET data providers. Given this limitation, if your usage is different from ASP.NET (where DI scopes are implicitly managed and bound to web requests), say a job, and you need parallelism, then you need to define and manage DI scopes associated with your threads.
+    - We're investigating ways to overcome this limitation by offering optional DI scope management for future versions with a "it's just a simple library" design mindset, without resorting to reflection like approaches.
 
 ### Application Layer
 
