@@ -73,9 +73,11 @@ public class TodoRepository : ITodoRepository
     
     public async Task AddAsync(Todo todo, CancellationToken cancellationToken)
     {
-        var (dbConnection, dbTransaction) = await _dbUnityOfWorkContext.GetDbObjectsAsync(cancellationToken); // Get managed, shared db objects.
+        // Get managed, shared db objects.
+        var (dbConnection, dbTransaction) = await _dbUnityOfWorkContext.GetDbObjectsAsync(cancellationToken); 
         const string sql = "INSERT Todos(Id, Name, IsComplete) VALUES (@Id, @Name, @IsComplete);";
-        await dbConnection.ExecuteAsync(sql, todo, dbTransaction); // Just use then without lifecycle and success/failure handling concerns at this layer.
+        // Just use then without lifecycle and success/failure handling concerns at this layer.
+        await dbConnection.ExecuteAsync(sql, todo, dbTransaction);
     }
 }
 ```
