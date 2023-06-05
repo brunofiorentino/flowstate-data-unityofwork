@@ -17,6 +17,8 @@ public class WhenStartingDbUnitiesOfWork
         var (unityOfWorkManager, _) = TestRepository.GivenUnityOfWorkManagerAndTestRepositorySetup();
 
         for (var i = 0; i < 3; i++)
+#pragma warning disable CS0642 // Possible mistaken empty statement
             await using (var unityOfWorkA = unityOfWorkManager.StartUnityOfWork()) ;
+#pragma warning restore CS0642 // Possible mistaken empty statement
     }
 }
