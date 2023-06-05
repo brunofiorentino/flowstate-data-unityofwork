@@ -80,9 +80,8 @@ public class TodoRepository : ITodoRepository
         // Get managed, shared db objects.
         var (dbConnection, dbTransaction) = await _dbUnityOfWorkContext.GetDbObjectsAsync(cancellationToken); 
 
-        const string sql = "INSERT Todos(Id, Name, IsComplete) VALUES (@Id, @Name, @IsComplete);";
-
         // Just use them without lifecycle and success/failure handling concerns at this layer.
+        const string sql = "INSERT Todos(Id, Name, IsComplete) VALUES (@Id, @Name, @IsComplete);";
         await dbConnection.ExecuteAsync(sql, todo, dbTransaction);
     }
 }
