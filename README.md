@@ -1,8 +1,8 @@
 # Flowstate.Data.UnityOfWork
 
-Flowstate.Data.UnityOfWork is a straightforward C# Unity of Work library with a default implementation compatible with any standard .NET data provider ([System.Data.Common](https://learn.microsoft.com/en-us/dotnet/api/system.data.common?view=net-6.0) classes), exposing managed, shared, provider typed [DbConnection](https://learn.microsoft.com/en-us/dotnet/api/system.data.common.dbconnection?view=net-6.0) and [DbTransaction](https://learn.microsoft.com/en-us/dotnet/api/system.data.common.dbtransaction?view=net-6.0) instances for repositories. 
+Flowstate.Data.UnityOfWork is a straightforward C# Unity of Work library featuring a default implementation compatible with any standard .NET data provider ([System.Data.Common](https://learn.microsoft.com/en-us/dotnet/api/system.data.common?view=net-6.0) classes), exposing managed, shared, provider typed [DbConnection](https://learn.microsoft.com/en-us/dotnet/api/system.data.common.dbconnection?view=net-6.0) and [DbTransaction](https://learn.microsoft.com/en-us/dotnet/api/system.data.common.dbtransaction?view=net-6.0) instances for repositories. 
 
-It can be helpful to organize your app if you're playing with .NET minimal apis, raw .NET data providers and/or Native-AOT seeking for simplicity or improvements for performance sensitive scenarios.
+It can be helpful to organize your application if you're looking for simpler designs, playing with .NET minimal apis, raw .NET data providers and/or compatibility with forthcoming Native-AOT.
 
 
 ## Usage
@@ -34,7 +34,7 @@ services.AddScoped<CreateTodoUseCase>();
 
 - All required registrations from the library need [**Scoped Lifetime**](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection#scoped), hence dependent services too.
 - As is common with database-related libraries, "non guaranteed thread-safety for instance members" is propagated from .NET data providers. Given this limitation, if your usage is different from ASP.NET (where DI scopes are implicitly managed and bound to web requests), say a job, and you need parallelism, then you need to define and manage DI scopes associated with your threads.
-    - We're investigating ways to add optional DI scope management.
+    - We're investigating ways to add optional/convenient DI scope management for these cases.
 
 ### Application Layer
 
@@ -54,8 +54,10 @@ public class CreateTodoUseCase
     {
         await using var unityOfWork = _unityOfWorkManager.StartUnityOfWork();
         await using var transaction = await unityOfWork.StartTransactionAsync(cancellationToken);
+        
         // await _someOtherRepository.Get...
         await _todoRepository.AddAsync(todo, cancellationToken);
+        
         // Commit for happy path relying on IDisposable otherwise.
         await transaction.CommitAsync(cancellationToken);
     }
@@ -77,8 +79,10 @@ public class TodoRepository : ITodoRepository
     {
         // Get managed, shared db objects.
         var (dbConnection, dbTransaction) = await _dbUnityOfWorkContext.GetDbObjectsAsync(cancellationToken); 
+
         const string sql = "INSERT Todos(Id, Name, IsComplete) VALUES (@Id, @Name, @IsComplete);";
-        // Just use then without lifecycle and success/failure handling concerns at this layer.
+
+        // Just use them without lifecycle and success/failure handling concerns at this layer.
         await dbConnection.ExecuteAsync(sql, todo, dbTransaction);
     }
 }
