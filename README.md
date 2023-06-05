@@ -2,7 +2,7 @@
 
 Flowstate.Data.UnityOfWork is a straightforward C# Unity of Work library with a default implementation compatible with any standard .NET data provider ([System.Data.Common](https://learn.microsoft.com/en-us/dotnet/api/system.data.common?view=net-6.0) classes), exposing managed, shared, provider typed [DbConnection](https://learn.microsoft.com/en-us/dotnet/api/system.data.common.dbconnection?view=net-6.0) and [DbTransaction](https://learn.microsoft.com/en-us/dotnet/api/system.data.common.dbtransaction?view=net-6.0) instances for repositories. 
 
-Can be helpful to organize your app if you're playing with .NET minimal apis, raw ADO.NET/Dapper and Native-AOT seeking for simplicity or improvements for performance sensitive scenarios.
+Can be helpful to organize your app if you're playing with .NET minimal apis, raw .NET date providers and/or Native-AOT seeking for simplicity or improvements for performance sensitive scenarios.
 
 
 ## Usage
@@ -34,7 +34,7 @@ services.AddScoped<CreateTodoUseCase>();
 
 - All required registrations from the library need [**Scoped Lifetime**](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection#scoped), hence dependent services too.
 - As is common with database-related libraries, "non guaranteed thread-safety for instance members" is propagated from .NET data providers. Given this limitation, if your usage is different from ASP.NET (where DI scopes are implicitly managed and bound to web requests), say a job, and you need parallelism, then you need to define and manage DI scopes associated with your threads.
-    - We're investigating ways to overcome this limitation by offering optional DI scope management for future versions with a "it's just a simple library" design mindset, without resorting to reflection like approaches.
+    - We're investigating ways to add optional DI scope management.
 
 ### Application Layer
 
@@ -56,7 +56,8 @@ public class CreateTodoUseCase
         await using var transaction = await unityOfWork.StartTransactionAsync(cancellationToken);
         // await _someOtherRepository.Get...
         await _todoRepository.AddAsync(todo, cancellationToken);
-        await transaction.CommitAsync(cancellationToken); // Commit for happy path relying on IDisposable otherwise.
+        // Commit for happy path relying on IDisposable otherwise.
+        await transaction.CommitAsync(cancellationToken);
     }
 }
 ```
