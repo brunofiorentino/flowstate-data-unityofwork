@@ -2,7 +2,7 @@
 
 Flowstate.Data.UnityOfWork is a straightforward C# Unity of Work library featuring a default implementation compatible with any standard .NET data provider ([System.Data.Common](https://learn.microsoft.com/en-us/dotnet/api/system.data.common?view=net-6.0) classes), exposing managed, shared, provider typed [DbConnection](https://learn.microsoft.com/en-us/dotnet/api/system.data.common.dbconnection?view=net-6.0) and [DbTransaction](https://learn.microsoft.com/en-us/dotnet/api/system.data.common.dbtransaction?view=net-6.0) instances for repositories. 
 
-It can be helpful to organize your application if you're looking for simpler designs, playing with .NET minimal apis, raw .NET data providers and/or compatibility with forthcoming Native-AOT support.
+It can be helpful to organize your application if you're looking for simpler designs, playing with .NET minimal apis, raw .NET data providers and/or compatibility with forthcoming native AOT support.
 
 
 ## Usage
